@@ -9,16 +9,14 @@ export default class TasksController {
     return user.tasks
   }
   async store({ request, auth }: HttpContext) {
-    const { title, description } = await request.validateUsing(createTaskValidator)
+    const { title } = await request.validateUsing(createTaskValidator)
     const user = auth.user!
     await user.related('tasks').create({
       title,
-      description,
     })
 
     return {
       title,
-      description,
     }
   }
   async show({ params, response }: HttpContext) {
@@ -32,12 +30,12 @@ export default class TasksController {
   async update({ params, response, request }: HttpContext) {
     try {
       const task = await Task.findByOrFail('id', params.id)
-      const { title, description, done } = await request.validateUsing(updateTaskValidator)
-      task.merge({ title, description, done })
-      await task.save
+      const {  done } = await request.validateUsing(updateTaskValidator)
+      task.merge({ done })
+      await task.save()
       return task
-    } catch (error) {
-      return response.status(400).json({ error: 'Task not found' })
+    } catch (error: any) {
+      return response.status(400).json({ error: error.message })
     }
   }
   async destroy({ params, response }: HttpContext) {

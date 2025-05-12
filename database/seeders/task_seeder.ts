@@ -6,17 +6,14 @@ export default class extends BaseSeeder {
     await Task.createMany([
       {
         title: 'Task 1',
-        description: 'Descrição aleatória 1',
         userId: 1,
       },
       {
         title: 'Task 2',
-        description: 'Descrição aleatória 2',
         userId: 1,
       },
       {
         title: 'Task 3',
-        description: 'Descrição aleatória 3',
         userId: 2,
       },
     ])

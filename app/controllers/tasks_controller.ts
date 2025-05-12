@@ -1,5 +1,5 @@
 import Task from '#models/task'
-import { createTaskValidator, updateTaskValidator } from '#validators/task'
+import { createTaskValidator } from '#validators/task'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class TasksController {
@@ -27,15 +27,15 @@ export default class TasksController {
       return response.status(400).json({ error: 'Task not found' })
     }
   }
-  async update({ params, response, request }: HttpContext) {
+  async update({ params, response}: HttpContext) {
     try {
       const task = await Task.findByOrFail('id', params.id)
-      const {  done } = await request.validateUsing(updateTaskValidator)
+      const done  = !task.$attributes.done
       task.merge({ done })
       await task.save()
       return task
     } catch (error: any) {
-      return response.status(400).json({ error: error.message })
+      return response.status(400).json({ error: 'Erro ao atualizar ' })
     }
   }
   async destroy({ params, response }: HttpContext) {

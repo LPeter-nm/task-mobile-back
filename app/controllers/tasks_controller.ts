@@ -27,10 +27,10 @@ export default class TasksController {
       return response.status(400).json({ error: 'Erro ao listar tarefa' })
     }
   }
-  async update({ params, response}: HttpContext) {
+  async update({ params, response }: HttpContext) {
     try {
       const task = await Task.findByOrFail('id', params.id)
-      const done  = !task.$attributes.done
+      const done = !task.$attributes.done
       task.merge({ done })
       await task.save()
       return task
